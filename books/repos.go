@@ -17,8 +17,9 @@ type BookReposV1 struct {
 	DB *sqlx.DB
 }
 
-func NewBookRepos() BookReposInterface {
+func NewBookRepos() (BookReposInterface) {
 	db, _ := src.DbSetup()
+
 	return &BookReposV1{DB: db}
 }
 

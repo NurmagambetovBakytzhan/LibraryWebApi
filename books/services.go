@@ -13,7 +13,7 @@ type BookServiceV1 struct {
 }
 
 func NewBookService() BookServiceInterface {
-	return BookServiceV1{bookRepos: NewBookRepos()}
+	return &BookServiceV1{bookRepos: NewBookRepos()}
 }
 
 func (b BookServiceV1) CreateBook(book *Book) error {

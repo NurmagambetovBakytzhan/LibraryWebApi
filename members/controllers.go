@@ -14,6 +14,49 @@ func NewMemberController() MemberController {
 	return MemberController{memberService: NewMemberService()}
 }
 
+func (mc MemberController) SubscribeBookById(c *fiber.Ctx) error {
+	var request struct {
+		bookId   uint `json:"bookId"`
+		memberId uint `json:"memberId"`
+	}
+
+	err := c.BodyParser(&request)
+
+	if err != nil {
+		return c.Status(http.StatusBadRequest).JSON(fiber.Map{"Error": err.Error()})
+	}
+
+	err = mc.memberService.SubscribeBookById(request.memberId, request.bookId)
+
+	if err != nil {
+		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{"Error": err.Error()})
+	}
+	return c.JSON(fiber.Map{
+		"message": "Book subscribed successfully",
+	})
+}
+
+func (mc MemberController) UnsubscribeBookById(c *fiber.Ctx) error {
+	var request struct {
+		bookId   uint `json:"bookId"`
+		memberId uint `json:"memberId"`
+	}
+
+	err := c.BodyParser(&request)
+	if err != nil {
+		return c.Status(http.StatusBadRequest).JSON(fiber.Map{"Error": err.Error()})
+	}
+
+	err = mc.memberService.UnsubscribeBookById(request.memberId, request.bookId)
+	if err != nil {
+		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{"Error": err.Error()})
+	}
+	return c.JSON(fiber.Map{
+		"message": "Book unsubscribed successfully",
+	})
+
+}
+
 func (mc MemberController) CreateMember(c *fiber.Ctx) error {
 	var member Member
 	if err := json.Unmarshal(c.Body(), &member); err != nil {

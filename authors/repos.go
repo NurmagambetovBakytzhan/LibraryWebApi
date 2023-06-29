@@ -31,7 +31,7 @@ func NewAuthorRepos() AuthorReposInterface {
 
 func (a *AuthorReposV1) GetAvailableBooksByAuthorId(authorId uint) ([]books.Book, error) {
 	var availableBooks []books.Book
-	err := a.DB.Select(&availableBooks, `SELECT b.* FROM books b LEFT JOIN subscriptions s ON b.id = s.bookId WHERE b.author_id = $1 AND s.id IS NULL`, authorId)
+	err := a.DB.Select(&availableBooks, `SELECT b.* FROM books b LEFT JOIN subscriptions s ON b.id = s.book_id WHERE b.author_id = $1 AND s.id IS NULL`, authorId)
 	return availableBooks, err
 }
 
